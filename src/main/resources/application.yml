@@ -1,8 +1,8 @@
 spring:
   r2dbc:
-    url: r2dbc:postgresql://localhost:5432/solicitudes_db
-    username: tu_usuario
-    password: tu_contraseña
+    url: r2dbc:postgresql://localhost:5432/solicitudes_BD
+    username: admnin
+    password: system123
   sql:
     init:
       mode: always
