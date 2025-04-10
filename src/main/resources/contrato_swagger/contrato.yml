@@ -1,0 +1,123 @@
+openapi: 3.0.1
+info:
+  title: API de Solicitudes
+  description: API REST para la gestión de Solicitudes y sus Contactos
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+
+paths:
+  /solicitudes:
+    get:
+      summary: Listar todas las solicitudes
+      tags: [Solicitudes]
+      responses:
+        '200':
+          description: Lista de solicitudes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Solicitud'
+    post:
+      summary: Crear una nueva solicitud con sus contactos
+      tags: [Solicitudes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolicitudRequest'
+      responses:
+        '201':
+          description: Solicitud creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solicitud'
+
+  /solicitudes/{id}:
+    get:
+      summary: Obtener detalles de una solicitud
+      tags: [Solicitudes]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalle de la solicitud
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solicitud'
+        '404':
+          description: Solicitud no encontrada
+
+  /solicitudes/{id}/contactos:
+    get:
+      summary: Obtener contactos asociados a una solicitud
+      tags: [Contactos]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de contactos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contacto'
+        '404':
+          description: Solicitud no encontrada
+
+components:
+  schemas:
+    Solicitud:
+      type: object
+      properties:
+        id:
+          type: integer
+        codigoGenerado:
+          type: string
+        marca:
+          type: string
+        tipoSolicitud:
+          type: string
+        fechaEnvio:
+          type: string
+          format: date
+        numeroContacto:
+          type: string
+        nombreContacto:
+          type: string
+
+    Contacto:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        numero:
+          type: string
+        solicitudId:
+          type: integer
+
+    SolicitudRequest:
+      type: object
+      properties:
+        solicitud:
+          $ref: '#/components/schemas/Solicitud'
+        contactos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contacto'
